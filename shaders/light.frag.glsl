@@ -1,14 +1,14 @@
-# version 120 
+# version 130 
 
-// Mine is an old machine.  For version 130 or higher, do 
-// in vec4 color ;  
-// in vec3 mynormal ; 
-// in vec4 myvertex ;
+// Mine is a old machine.  For version 130 or higher, do 
+ in vec4 color ;  
+ in vec3 mynormal ; 
+ in vec4 myvertex ;
 // That is certainly more modern
 
-varying vec4 color ;
-varying vec3 mynormal ; 
-varying vec4 myvertex ; 
+//varying vec4 color ;
+//varying vec3 mynormal ; 
+//varying vec4 myvertex ; 
 
 uniform int islight ; // are we lighting. 
 

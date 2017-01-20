@@ -13,8 +13,6 @@
 #include "Transform.h"
 #include <string>
 #include <sstream>
-#include <FreeImage.h>
-#include "UCSD/grader.h"
 
 int amount; // The amount of rotation for each arrow press
 
@@ -24,11 +22,7 @@ const vec3 eyeinit(0.0,0.0,5.0); // Initial eye position, also for resets
 const vec3 upinit(0.0,1.0,0.0); // Initial up position, also for resets
 const int amountinit = 5; //Initial step amount for camera movement, also for resets
 
-bool useGlu; // Toggle use of "official" opengl/glm transform vs user code
-int w = 500, h = 500; // width and height 
-
-Grader grader;
-bool allowGrader = false; 
+int w = 600, h = 600; // width and height 
 
 GLuint vertexshader,fragmentshader,shaderprogram; // shaders
 
@@ -80,19 +74,6 @@ std::string imgNumber(int num) {
 	return ss.str();
 }
 
-void saveScreenshot(string fname) {
-	int pix = w * h;
-	BYTE pixels[3*pix];	
-	glReadBuffer(GL_FRONT);
-	glReadPixels(0,0,w,h,GL_BGR,GL_UNSIGNED_BYTE, pixels);
-
-	FIBITMAP *img = FreeImage_ConvertFromRawBits(pixels, w, h, w * 3, 24, 0xFF0000, 0x00FF00, 0x0000FF, false);
-	
-	std::cout << "Saving screenshot: " << fname << "\n";
-
-	FreeImage_Save(FIF_PNG, img, fname.c_str(), 0);
-}
-
 
 void printHelp() {
 	std::cout << "\npress 'h' to print this message again.\n" 
@@ -114,24 +95,6 @@ void keyboard(unsigned char key,int x,int y) {
 		case '-':
 			amount--;
 			std::cout << "amount set to " << amount << "\n"; 
-			break;
-		case 'i':
-			if(useGlu) {
-				std::cout << "Please disable glm::LookAt by pressing 'g'"
-					   << " before running tests\n";
-			}
-			else if(!allowGrader) {
-				std::cout << "Error: no input file specified for grader\n";
-			} else {
-				std::cout << "Running tests...\n";
-				grader.runTests();
-				std::cout << "Done! [ESC to quit]\n";
-			}
-			break;
-		case 'g':
-			useGlu = !useGlu;
-			std::cout << "Using glm::LookAt set to: " 
-				<< (useGlu ? " true " : " false ") << "\n"; 
 			break;
 		case 'h':
 			printHelp();
@@ -190,8 +153,8 @@ void init() {
 
 	eye = eyeinit; 
 	up = upinit; 
+
 	amount = amountinit;
-	useGlu = true;
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -223,10 +186,9 @@ void display() {
 	mat4 mv; 
 	const vec3 center(0.0,0.0,0.0); 
 
-	if (useGlu) mv = glm::lookAt(eye,center,up); 
-	else {
-		mv = Transform::lookAt(eye,up); 
-	}
+	mv = Transform::lookAt(eye,up); 
+
+
 	glLoadMatrixf(&mv[0][0]); 
 
 	// Set Light and Material properties for the teapot
@@ -249,6 +211,7 @@ void display() {
 	glUniform1fv(shininess,1,high); 
 	glUniform1i(islight,true);
 
+	//glutSolidCube(3);
 	glutSolidTeapot(2);
 	glutSwapBuffers();
 }
@@ -256,7 +219,6 @@ void display() {
 int main(int argc,char* argv[]) {
 	
 	//Initialize GLUT
-	FreeImage_Initialise();
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutCreateWindow("HW1: Transformations");
@@ -267,19 +229,8 @@ int main(int argc,char* argv[]) {
 	glutReshapeFunc(reshape);
 	glutReshapeWindow(w,h);
 	
-	if(argc > 1) {
-		allowGrader = true;
-		grader.init(argv[1]);
-		grader.loadCommands(argv[1]);
-		grader.bindDisplayFunc(display);
-		grader.bindSpecialFunc(specialKey);
-		grader.bindKeyboardFunc(keyboard);
-		grader.bindScreenshotFunc(saveScreenshot);
-	}
-	
 	printHelp();
 	glutMainLoop();	
-	FreeImage_DeInitialise();
 
 	return 0;
 }

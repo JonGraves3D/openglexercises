@@ -17,16 +17,14 @@ endif
 RM = /bin/rm -f 
 all: transform
 
-transform: main.o shaders.o Transform.o shaders.h Transform.h grader.o UCSD/grader.h
-	$(CC) $(CFLAGS) -o transforms shaders.o main.o Transform.o grader.o $(INCFLAGS) $(LDFLAGS) 
-main.o: main.cpp shaders.h Transform.h UCSD/grader.h
+transform: main.o shaders.o Transform.o shaders.h Transform.h 
+	$(CC) $(CFLAGS) -o transforms shaders.o main.o Transform.o $(INCFLAGS) $(LDFLAGS) 
+main.o: main.cpp shaders.h Transform.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c main.cpp
 shaders.o: shaders.cpp shaders.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c shaders.cpp
 Transform.o: Transform.cpp Transform.h 
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Transform.cpp  
-grader.o: UCSD/grader.cpp UCSD/grader.h
-	$(CC) $(CFLAGS) $(INCFLAGS) -c UCSD/grader.cpp
 clean: 
 	$(RM) *.o transforms *.png
 
