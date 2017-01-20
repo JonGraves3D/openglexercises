@@ -64,11 +64,9 @@ vec3 normalize(vec3 vector)
 
 // Transforms the camera left around the "crystal ball" interface
 void Transform::left(float degrees, vec3& eye, vec3& up) {
-  // YOUR CODE FOR HW1 HERE
-	//up = normalize(up);
 	eye = Transform::rotate(degrees, up) * eye;
 
-	//printf("Coordinates: %.2f, %.2f, %.2f, distance: %.2f \n", eye.x, eye.y, eye.z, sqrt(pow(eye.x, 2) + pow(eye.y, 2) + pow(eye.z, 2)));
+	//printf("Distance: %.7f \n", sqrt(pow(eye.x, 2) + pow(eye.y, 2) + pow(eye.z, 2)));
 }
 
 // Transforms the camera up around the "crystal ball" interface
@@ -82,8 +80,7 @@ void Transform::up(float degrees, vec3& eye, vec3& up) {
 
 	degrees_debug += degrees;
 
-	printf(" %.2f", degrees_debug);
-	printf("Distance: %.7f \n", sqrt(pow(eye.x, 2) + pow(eye.y, 2) + pow(eye.z, 2)));
+	//printf("Distance: %.7f \n", sqrt(pow(eye.x, 2) + pow(eye.y, 2) + pow(eye.z, 2)));
 }
 
 // Your implementation of the glm::lookAt matrix
