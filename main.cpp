@@ -14,12 +14,14 @@
 #include <string>
 #include <sstream>
 
+float scale = 2.0f;
+
 
 int amount; // The amount of rotation for each arrow press
 
 vec3 eye; // The (regularly updated) vector coordinates of the eye location 
 vec3 up;  // The (regularly updated) vector coordinates of the up location 
-const vec3 eyeinit(0.0,0.0,5.0); // Initial eye position, also for resets
+const vec3 eyeinit(0.0,0.0,10.0); // Initial eye position, also for resets
 const vec3 upinit(0.0,1.0,0.0); // Initial up position, also for resets
 const int amountinit = 5; //Initial step amount for camera movement, also for resets
 vec4 bgColor(0.153f, 0.158f, 0.133f, 1.0f);
@@ -108,8 +110,16 @@ void keyboard(unsigned char key,int x,int y) {
 			eye = eyeinit; 
 			up = upinit; 
 			amount = amountinit;
+			scale = 2.0f;
 			std::cout << "eye and up vectors reset, amount set to " << amountinit << "\n";
 			break; 
+		case 'q':
+			scale = scale + 0.1f;
+		break;
+
+		case 'e':
+			scale = scale - 0.1f;
+		break;
 
 
 	}
@@ -217,8 +227,9 @@ void display() {
 	glUniform1fv(shininess,1,high); 
 	glUniform1i(islight,true);
 
-	//glutSolidCube(3);
-	glutSolidTeapot(2);
+	//glutSolidCube(scale);
+
+	glutSolidTeapot(scale);
 	glutSwapBuffers();
 }
 
