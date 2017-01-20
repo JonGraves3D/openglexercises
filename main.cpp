@@ -14,6 +14,7 @@
 #include <string>
 #include <sstream>
 
+
 int amount; // The amount of rotation for each arrow press
 
 vec3 eye; // The (regularly updated) vector coordinates of the eye location 
@@ -21,8 +22,9 @@ vec3 up;  // The (regularly updated) vector coordinates of the up location
 const vec3 eyeinit(0.0,0.0,5.0); // Initial eye position, also for resets
 const vec3 upinit(0.0,1.0,0.0); // Initial up position, also for resets
 const int amountinit = 5; //Initial step amount for camera movement, also for resets
+vec4 bgColor(0.153f, 0.158f, 0.133f, 1.0f);
 
-int w = 600, h = 600; // width and height 
+int w = 500, h = 500; // width and height 
 
 GLuint vertexshader,fragmentshader,shaderprogram; // shaders
 
@@ -107,10 +109,14 @@ void keyboard(unsigned char key,int x,int y) {
 			up = upinit; 
 			amount = amountinit;
 			std::cout << "eye and up vectors reset, amount set to " << amountinit << "\n";
-			break;                 
+			break; 
+
+
 	}
 	glutPostRedisplay();
 }
+
+
 
 //  You will need to enter code for the arrow keys 
 //  When an arrow key is pressed, it will call your transform functions
@@ -178,7 +184,7 @@ void init() {
 }
 
 void display() {
-	glClearColor(0,0,1,0);
+	glClearColor(bgColor.x, bgColor.y, bgColor.z, bgColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 

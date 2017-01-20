@@ -8,27 +8,37 @@
 
 
 
-float degrees_debug;
-
 mat3 Transform::rotate(const float degrees, const vec3& axis) {
   // YOUR CODE FOR HW1 HERE
 
 	float radians = degrees * pi / 180.0f;
 
-	glm:mat3 m1 = mat3(
-		axis.x*axis.x, axis.x*axis.y, axis.x*axis.z,
+//	glm:mat3 m1 = mat3(
+//		axis.x*axis.x, axis.x*axis.y, axis.x*axis.z,
+//		axis.x*axis.y, axis.y*axis.y, axis.y*axis.z,
+//		axis.x*axis.z, axis.y*axis.z, axis.z*axis.z
+//		);
+
+	mat3 m1 = mat3(
+		axis.x*axis.x, axis.x*axis.y, axis.x*axis.y,
 		axis.x*axis.y, axis.y*axis.y, axis.y*axis.z,
 		axis.x*axis.z, axis.y*axis.z, axis.z*axis.z
 		);
 	
-	m1 = glm::transpose(m1);
+	//m1 = glm::transpose(m1);
+
+//	mat3 m2 = mat3(
+//		0, -axis.z, axis.y, 
+//		axis.z, 0, -axis.x, 
+//		-axis.y, axis.x, 0);
 
 	mat3 m2 = mat3(
-		0, -axis.z, axis.y, 
-		axis.z, 0, -axis.x, 
-		-axis.y, axis.x, 0);
+		0, axis.z, -axis.y,
+		-axis.z, 0, axis.x,
+		axis.y, -axis.x, 0
+		);
 
-	m2 = glm::transpose(m2);
+	//m2 = glm::transpose(m2);
 
 
 	mat3 rotation = cos(radians) * mat3(1.0f) + (1 - cos(radians)) * m1 + sin(radians) * m2;
@@ -77,9 +87,6 @@ void Transform::up(float degrees, vec3& eye, vec3& up) {
 	up = Transform::rotate(degrees, axis) * up;
 	eye = Transform::rotate(degrees, axis) * eye;
 
-
-	degrees_debug += degrees;
-
 	//printf("Distance: %.7f \n", sqrt(pow(eye.x, 2) + pow(eye.y, 2) + pow(eye.z, 2)));
 }
 
@@ -120,7 +127,3 @@ Transform::~Transform()
 {
 
 }
-
-//helper functions
-
-

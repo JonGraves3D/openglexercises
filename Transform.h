@@ -27,5 +27,6 @@ class Transform
 		static void up(float degrees, vec3& eye, vec3& up);
 		static mat4 lookAt(vec3 eye, vec3 up);
 		static mat3 rotate(const float degrees, const vec3& axis) ;
+
 };
 
