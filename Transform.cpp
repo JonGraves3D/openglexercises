@@ -31,9 +31,9 @@ mat3 Transform::rotate(const float degrees, const vec3& axis) {
 glm::vec3 cross(glm::vec3 v1, glm::vec3 v2)
 {
 
-	float a = v1.y * v2.z - v2.z * v1.y;
-	float b = v1.z * v2.x - v2.x * v1.z;
-	float c = v1.x * v2.y - v2.y * v1.x;
+	float a = v1.y * v2.z - v1.z * v2.y;
+	float b = v1.z * v2.x - v1.x * v2.z;
+	float c = v1.x * v2.y - v1.y * v2.x;
 
 	printf("a:%.2f  \n", a);
 	printf("b:%.2f  \n", b);
