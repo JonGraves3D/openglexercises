@@ -6,6 +6,10 @@
 #include <stdio.h>
 //Please implement the following functions:
 
+using glm::vec3;
+using glm::mat3;
+using glm::mat4;
+
 mat3 Transform::rotate(const float degrees, const vec3& axis) {
   // YOUR CODE FOR HW1 HERE
 
@@ -17,7 +21,10 @@ mat3 Transform::rotate(const float degrees, const vec3& axis) {
 	
 	m1 = glm::transpose(m1);
 
-	glm::mat3 m2 = glm::mat3(0, -axis.z, axis.y, axis.z, 0, -axis.x, -axis.y, axis.x, 0);
+	glm::mat3 m2 = glm::mat3(
+		0, -axis.z, axis.y, 
+		axis.z, 0, -axis.x, 
+		-axis.y, axis.x, 0);
 
 	m2 = glm::transpose(m2);
 
@@ -77,12 +84,38 @@ void Transform::up(float degrees, vec3& eye, vec3& up) {
 
 // Your implementation of the glm::lookAt matrix
 mat4 Transform::lookAt(vec3 eye, vec3 up) {
-  // YOUR CODE FOR HW1 HERE
 
-  // You will change this return call
-  return mat4();
+	glm::vec3 w = normalize(eye);
+	up = normalize(up);
+	glm::vec3 u = cross(up, w);
+	glm::vec3 v = normalize(cross(w,u));
+
+//	glm::mat4 rotation = glm::mat4(
+//		u.x, u.y, u.z, 0,
+//		v.x, v.y, v.z, 0,
+//		w.x, w.y, w.z, 0,
+//		  0,   0,   0, 1);
+	glm::mat4 rotation = glm::mat4(
+		u.x, v.x, w.x, 0, 
+		u.y, v.y, w.y, 0, 
+		u.z, v.z, w.z, 0,
+		0, 0, 0, 1);
+
+//	rotation = glm::transpose(rotation);
+
+	glm::mat4 translation = glm::mat4(
+		1, 0, 0, -eye.x,
+		0, 1, 0, -eye.y,
+		0, 0, 1, -eye.z,
+		0, 0, 0,      1);
+
+	translation = glm::transpose(translation);
+
+	glm::mat4 transformation = rotation * translation;
+
+	return transformation;
+
 }
-
 Transform::Transform()
 {
 
